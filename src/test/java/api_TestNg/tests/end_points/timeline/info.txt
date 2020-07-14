@@ -1,0 +1,4 @@
+We interpret timeline as a 30 minutes timeframe which has a specific start
+and finish times. Imagine, you want to book a room from 2:30pm to 3:30pm,
+you will have to block two timelines (2:30pm - 3:00pm and 3:00pm - 3:30pm)
+within room availability schedule.

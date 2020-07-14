@@ -1,0 +1,4 @@
+Conference - group of people sit in the room and aim to look serious.
+We define two types of conferences: solid - room is booked with 100%
+waranty and iffy - room is booked without warranty, means another
+reservator might rebook the room with solid conference.
