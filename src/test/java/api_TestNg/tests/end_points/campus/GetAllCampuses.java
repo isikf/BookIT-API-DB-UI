@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.*;
 public class GetAllCampuses extends TestBase {
 
     //TODO convert to data provider to test all user Types
-    String token = ApiBookitUtils.generateAutorizationToken("teacher");
+  //  String token = ApiBookitUtils.generateAutorizationToken("teacher");
 
 
     //positive test
@@ -126,20 +126,22 @@ public class GetAllCampuses extends TestBase {
         Gson gson = new Gson();
         System.out.println("json = " + response.path("findAll{it.location == \"IL\"}clusters[0].rooms[0]"));
 
-        List<Map<String,Object>>path = ( List<Map<String,Object>>)response.path("findAll{it.location == \"IL\"}clusters[0].rooms[0]");
-        String json = gson.toJson(path);
+        List<Map<String,Object>>listJson = response.path("findAll{it.location == \"IL\"}clusters[0].rooms[0]");
+        String json = gson.toJson(listJson);
+        System.out.println("path = " + listJson);
+
+    //    List<Rooms> rooms = response.path("findAll{it.location == \"IL\"}clusters[0].rooms[0]");
 
         Rooms[] rooms =  gson.fromJson(json,Rooms[].class);
         //System.out.println("rooms = " + rooms.toString());
 
         for (Rooms room : rooms) {
             //System.out.println("room = " + room.toString());
-
             if(room.getId() == 217){
                 assertEquals(room.getName(),"facebook");
                 assertEquals(room.getDescription(),"move fast and break things");
                 assertEquals((int)room.getCapacity(),6);
-                assertEquals((boolean)room.getWithTV(),true);
+                assertEquals((boolean) room.getWithTV(),true);
                 assertTrue((room.getWithWhiteBoard().equals(true)));
             }
 
