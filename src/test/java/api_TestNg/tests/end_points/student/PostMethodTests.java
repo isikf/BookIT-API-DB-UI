@@ -30,6 +30,21 @@ public class PostMethodTests extends TestBase {
      *
      * user {student-id} has been added to the database
      */
+
+    /** Sample JSON Response From API for 1 studen:
+     *   {
+     *         "id": 8338,
+     *         "firstName": "Lesly",
+     *         "lastName": "SDET",
+     *         "role": "student-team-member"
+     *     }
+     *     *************JAMAL PLS Read First Here,**********************
+     *     Dokumandaki parametreler ile gelen responsedeki data sayıları farklı !!??
+     *     Postman den değişiklik(PUT) yapıyoruz/deniyoruz , ok diyor ama kontrol ettiğimizde değişikliği save yapmamıs oluyor
+     *     POST hiç olmuyor 422 hatası geliyor her türklü data türü tipi ile denedik
+     *     DELETE http methodu çalışıyor diğerlerine göre çalışması tuhaf...
+     */
+
     @Test
     public void addStudent() {
 
@@ -44,6 +59,17 @@ public class PostMethodTests extends TestBase {
                 "    batch-number: 13\n" +
                 "    team-name: \"GroupStudy\"\n" +
                 "}";
+//        String json = "{\n" +
+//                "    \"firstName\": \"Asli\",\n" +
+//                "    \"lastName\": \"Ozleblebici\",\n" +
+//                "    \"email\": \"tlh43@gmail.com\",\n" +
+//                "    \"password\": \"Test1234\",\n" +
+//                "    \"role\": \"student-team-leader\",\n" +
+//                "    \"campus-location\": \"VA\",\n" +
+//                "    \"batch-number\": 16,\n" +
+//                "    \"team-name\": \"BugBusters\"\n" +
+//                "}";
+
         Map<String,Object> queryParams = new HashMap<>();
         queryParams.put("first-name",",tlh");
         queryParams.put("last-name",",ozl");
@@ -62,12 +88,17 @@ public class PostMethodTests extends TestBase {
                 .header("Authorization", token)
                 //.body(json)
                 //.queryParams(queryParams)
-                .queryParam("first-name","tlh")
-                .queryParam("last-name"," ")
-                .queryParam(" "," ")
-                .queryParam(" "," ")
+                .queryParam("first-name","Talha")
+                .queryParam("last-name","Ozleblebici")
+                .queryParam("email","tlh43@gmail.com")
+                .queryParam("password","Test1234")
+                .queryParam("role","student-team-member")
+                .queryParam("campus-location","VA")
+                .queryParam("batch-number",16)
+                .queryParam("team-name","BugBusters")
+
                 .when().post("/api/students/student");
-        //TODO 422 HATA KODU ALIYORUZ BURDAN DEVAM KE
+        //TODO 422 HATA KODU ALIYORUZ, 201 yerine!
                 postResponse.then().assertThat().statusCode(201);
 
         String postMessage = postResponse.body().asString();
@@ -75,10 +106,11 @@ public class PostMethodTests extends TestBase {
         int id = Integer.parseInt(postMessage.substring(5, 9));
         System.out.println("id = " + id);
 
-//        given().queryParam("key", token)
-//                .pathParam("id", id)
-//                .when().get("/api/student/{id}")
-//                .then().assertThat().body("id", equalTo(id)).log().all();
+
+        given().queryParam("key", token)
+                .pathParam("id", id)
+                .when().get("/api/student/{id}")
+                .then().assertThat().body("id", equalTo(id)).log().all();
 
 
 
