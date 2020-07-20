@@ -6,6 +6,9 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.testng.Assert.*;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -31,22 +34,38 @@ public class PostMethodTests extends TestBase {
     public void addStudent() {
 
         // 1. WAY
-        String json = "{\n" +
-                "    \"firstName\": \"Talha-2\",\n" +
-                "    \"lastName\": \"Ozleblebici\",\n" +
-                "    \"email\": \"tlh43@hotmail.com\",\n" +
-                "    \"password\": \"Test1234\",\n" +
-                "    \"role\": \"student-team-leader\"\n" +
-                "    \"campus-location\": \"Newcastle\"\n" +
-                "    \"batch-number\": 13\n" +
-                "    \"team-name\": \"GroupStudy\"\n" +
+        String json = "{"+
+                 "  first-name: \"Talha2\",\n" +
+                "    last-name: \"Ozleblebici\",\n" +
+                "    email: \"tlh43@hotmail.com\",\n" +
+                "    password: \"Test1234\",\n" +
+                "    role: \"student-team-leader\"\n" +
+                "    campus-location: \"Newcastle\"\n" +
+                "    batch-number: 13\n" +
+                "    team-name: \"GroupStudy\"\n" +
                 "}";
+        Map<String,Object> queryParams = new HashMap<>();
+        queryParams.put("first-name",",tlh");
+        queryParams.put("last-name",",ozl");
+        queryParams.put("email",",tlh@comcom");
+        queryParams.put("password",",tlhtlh");
+        queryParams.put("role",",student-team-leader");
+        queryParams.put("campus-location","Newcastle");
+        queryParams.put("batch-number",13);
+        queryParams.put("team-name",",GroupStudy");
+
+
 
 
         Response postResponse = given().contentType(ContentType.JSON)
                // .queryParam("key", token)
                 .header("Authorization", token)
-                .body(json)
+                //.body(json)
+                //.queryParams(queryParams)
+                .queryParam("first-name","tlh")
+                .queryParam("last-name"," ")
+                .queryParam(" "," ")
+                .queryParam(" "," ")
                 .when().post("/api/students/student");
         //TODO 422 HATA KODU ALIYORUZ BURDAN DEVAM KE
                 postResponse.then().assertThat().statusCode(201);
@@ -56,10 +75,10 @@ public class PostMethodTests extends TestBase {
         int id = Integer.parseInt(postMessage.substring(5, 9));
         System.out.println("id = " + id);
 
-        given().queryParam("key", token)
-                .pathParam("id", id)
-                .when().get("/api/student/{id}")
-                .then().assertThat().body("id", equalTo(id)).log().all();
+//        given().queryParam("key", token)
+//                .pathParam("id", id)
+//                .when().get("/api/student/{id}")
+//                .then().assertThat().body("id", equalTo(id)).log().all();
 
 
 
